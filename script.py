@@ -14,10 +14,10 @@ print("Minute:", current_minute)
 
 
 # Set up Twilio credentials
-twilio_account_sid = 'ACaf518c3a1c148f9519c75a8c06fbbb04'
-twilio_auth_token = 'b2c3097507f9628e7fc57aa6a68c9414'
-twilio_phone_number = '9592148015'
-recipient_phone_number = '4379710121'
+twilio_account_sid = 'abc'
+twilio_auth_token = 'xyz'
+twilio_phone_number = '' # twilio provided phone number
+recipient_phone_number = '' # my phone number 
 
 
 # the week that user wants to book intervals for...2 for current one, 3 for next week and so on..
@@ -44,7 +44,7 @@ SLOTS = 48
 
 
 def login():
-    desired_url = "https://register.arise.com/opportunities"
+    desired_url = "https://xyz.com" # url
     driver.get(desired_url)
 
     # Get the current URL
@@ -53,18 +53,18 @@ def login():
     if desired_url != current_url:
         # enter the username
         username = driver.find_element(By.ID, 'username')
-        username.send_keys('KelvinV')
+        username.send_keys('') # username
 
         # enter pwrd
         pwd = driver.find_element(By.ID, 'pwd')
-        pwd.send_keys('Charmi@1234')
+        pwd.send_keys('') # password
 
         submit = driver.find_element(By.CLASS_NAME, 'login-btn-2')
         submit.click()
 
-# Open starmatics via 'Portal'
+# Open 'Portal' and also way 1 for booking portal navigation
 def openStarmatics():
-    driver.get('https://link.arise.com/home')
+    driver.get('https://home-link')
 
     time.sleep(5)
 
@@ -75,7 +75,7 @@ def openStarmatics():
     time.sleep(2)
 
     driver.get(
-        'https://starmatic.arise.com/Starmatic/Pages/Acp/QuickPost/ScheduleReleases.aspx')
+        'https://booking-portal-url')
 
     # If in case there is any extra tab. switch and close it
     if (len(driver.window_handles) > 1):
@@ -84,12 +84,13 @@ def openStarmatics():
 
     driver.switch_to.window(driver.window_handles[0])
     time.sleep(1)
+
     # 2 for this week and 3 for next week and so on..
     button = driver.find_element(
         By.ID, f'ctl00_cphMain_gdvSchdRel_ctl0{week}_lnkSchTyp')
     button.click()
 
-# Open starmatics via 'Client Opportunities'
+# Open 'Portal' and also way 1 for booking portal navigation
 def openStarmatics1():
     myPrograms = driver.find_element(
         By.XPATH, "//a[contains(text(), 'My Programs')]")
@@ -102,7 +103,7 @@ def openStarmatics1():
     time.sleep(8)
 
     driver.get(
-        'https://starmatic.arise.com/Starmatic/Pages/Acp/QuickPost/ScheduleReleases.aspx')
+        'https://booking-portal-url')
 
     # If in case there is any extra tab. switch and close it
     if (len(driver.window_handles) > 1):
@@ -115,7 +116,6 @@ def openStarmatics1():
     button = driver.find_element(
         By.ID, f'ctl00_cphMain_gdvSchdRel_ctl0{week}_lnkSchTyp')
     button.click()
-
 
 # logging in
 login()
@@ -169,7 +169,7 @@ while True:
         if check:
             driver.find_element(By.ID, 'ctl00_cphMain_btnSubmit').click()
             driver.find_element(By.ID, 'btnAlertOK').click()
-            driver.get('https://starmatic.arise.com/Starmatic/Pages/Acp/QuickPost/ScheduleReleases.aspx')
+            driver.get('https://booking-portal-url')
             driver.find_element(By.ID, f'ctl00_cphMain_gdvSchdRel_ctl0{week}_lnkSchTyp').click()
             # Send msg
             message = client.messages.create(
@@ -178,16 +178,6 @@ while True:
                 to = recipient_phone_number
             )
             print(f"SMS sent! Message : {message.body}")
-        # else:
-        #     # If there is any msg than send it to me
-        #     if Msg != "":
-        #         ## Send msg
-        #         message = client.messages.create (
-        #                     body = Msg,
-        #                     from_ = twilio_phone_number,
-        #                     to = recipient_phone_number
-        #         )
-        #         print(f"SMS sent! Message : {message.body}")
 
         time.sleep(1)
         driver.refresh()
