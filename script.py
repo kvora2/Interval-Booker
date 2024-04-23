@@ -23,7 +23,7 @@ recipient_phone_number = '4379710121'
 # the week that user wants to book intervals for...2 for current one, 3 for next week and so on..
 week = 2
 
-# Send the SMS notification using Twilio
+# Send the SMS notification using
 client = Client(twilio_account_sid, twilio_auth_token)
 
 weekdays = {
